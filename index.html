@@ -186,6 +186,7 @@
     <button class="nav-btn active" onclick="showPage('trips')">🗺️ ทริป</button>
     <button class="nav-btn" onclick="showPage('expenses')">💳 รายจ่าย</button>
     <button class="nav-btn" onclick="showPage('summary')">📊 สรุป</button>
+    <button class="nav-btn" onclick="showPage('forecast')">🔮 Forecast</button>
     <button class="nav-btn" onclick="showPage('converter')">💱 แปลงเงิน</button>
   </div>
 
@@ -238,6 +239,11 @@
           <button class="btn btn-ghost btn-sm" style="margin-top:11px" onclick="showPage('trips')">ไปเลือกทริป</button>
         </div>
       </div>
+    </div>
+
+    <!-- FORECAST PAGE -->
+    <div id="page-forecast" class="page">
+      <div id="forecast-content"><div class="empty-state"><div class="icon">🔮</div><p>กำลังโหลด...</p></div></div>
     </div>
 
     <!-- CONVERTER PAGE -->
@@ -555,10 +561,11 @@ window.showPage=name=>{
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  const map={trips:0,expenses:1,summary:2,converter:3};
+  const map={trips:0,expenses:1,summary:2,forecast:3,converter:4};
   document.querySelectorAll('.nav-btn')[map[name]].classList.add('active');
   if(name==='expenses') renderExpenses();
   if(name==='summary') renderSummary();
+  if(name==='forecast') renderForecast();
   if(name==='converter'){initRateEditor();doConvert();}
 };
 
@@ -988,6 +995,185 @@ window.exportToSheets=async()=>{
     w.document.write(`<html><body><h3 style="font-family:sans-serif">Copy ข้อความด้านล่าง แล้ววางใน Google Sheets</h3><textarea style="width:100%;height:80vh;font-size:12px">${tsv}</textarea></body></html>`);
   });
 };
+
+
+// ===== FORECAST =====
+function renderForecast(){
+  const el=document.getElementById('forecast-content');
+  
+  // Need at least 1 completed trip with expenses
+  const completedTrips=trips.filter(t=>{
+    const te=expenses.filter(e=>e.tripId===t.id);
+    return te.length>0;
+  });
+
+  if(!completedTrips.length){
+    el.innerHTML=`<div class="empty-state"><div class="icon">🔮</div>
+      <p>ต้องมีข้อมูลทริปและรายจ่ายอย่างน้อย 1 ทริปก่อน<br>เพื่อให้ระบบวิเคราะห์พฤติกรรมการใช้เงินของคุณ</p>
+      <button class="btn btn-ghost btn-sm" style="margin-top:11px" onclick="showPage('trips')">ไปเพิ่มทริป</button>
+    </div>`;
+    return;
+  }
+
+  // Compute per-trip stats
+  const tripStats=completedTrips.map(t=>{
+    const te=expenses.filter(e=>e.tripId===t.id);
+    const total=te.reduce((s,e)=>s+toTHB(e.amount,e.currency),0);
+    const dates=[...new Set(te.map(e=>e.date).filter(Boolean))].sort();
+    const days=t.start&&t.end?Math.ceil((new Date(t.end)-new Date(t.start))/86400000)+1:dates.length||1;
+    const avgDay=total/days;
+    const catBreakdown={};
+    te.forEach(e=>{catBreakdown[e.category]=(catBreakdown[e.category]||0)+toTHB(e.amount,e.currency);});
+    return {id:t.id,name:t.name,flag:t.flag,days,total,avgDay,catBreakdown};
+  });
+
+  // Global averages across all trips
+  const totalDays=tripStats.reduce((s,t)=>s+t.days,0);
+  const globalAvgDay=tripStats.reduce((s,t)=>s+t.total,0)/totalDays;
+
+  // Category averages per day
+  const allCats=['🍜 อาหาร','🚌 เดินทาง','🏨 ที่พัก','🎡 ท่องเที่ยว','🛍️ ช้อปปิ้ง','💊 สุขภาพ','📦 อื่นๆ'];
+  const catAvgDay={};
+  allCats.forEach(cat=>{
+    const total=tripStats.reduce((s,t)=>s+(t.catBreakdown[cat]||0),0);
+    catAvgDay[cat]=total/totalDays;
+  });
+
+  // Get forecast days from input (default 7)
+  const forecastDays=parseInt(document.getElementById('forecast-days')||'7')||7;
+  
+  // Per-trip comparison rows
+  const tripRows=tripStats.map(t=>{
+    const maxAvg=Math.max(...tripStats.map(x=>x.avgDay));
+    const pct=(t.avgDay/maxAvg)*100;
+    return `<div class="cat-row">
+      <div style="font-size:18px;width:24px">${t.flag}</div>
+      <div style="flex:1;font-size:13px;min-width:0">
+        <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.name}</div>
+        <div style="font-size:11px;color:var(--text2)">${t.days} วัน · ${t.total>0?fmtTHB(t.total):'-'}</div>
+      </div>
+      <div style="flex:1;padding:0 8px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:var(--accent)"></div></div></div>
+      <div style="font-family:var(--font-display);font-size:13px;font-weight:600;min-width:75px;text-align:right">${fmtTHB(t.avgDay)}/วัน</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div class="section-title" style="margin-bottom:14px">🔮 พยากรณ์งบทริปหน้า</div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>วิเคราะห์จาก ${completedTrips.length} ทริปของคุณ</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">เฉลี่ย/วัน (ทุกทริป)</div><div class="stat-value accent">${fmtTHB(globalAvgDay)}</div></div>
+        <div class="stat-card"><div class="stat-label">ทริปทั้งหมด</div><div class="stat-value">${completedTrips.length}</div></div>
+        <div class="stat-card"><div class="stat-label">วันเดินทางรวม</div><div class="stat-value">${totalDays}</div></div>
+      </div>
+      <div class="card-title" style="margin-top:4px"><span class="dot"></span>ค่าใช้จ่ายเฉลี่ย/วัน แต่ละทริป</div>
+      ${tripRows}
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>คำนวณงบทริปหน้า</div>
+      <div class="form-row" style="margin-bottom:14px">
+        <div class="form-group">
+          <label class="form-label">จำนวนวันที่จะไป</label>
+          <input type="number" id="forecast-days-input" value="7" min="1" max="365" 
+            oninput="updateForecast(this.value)" style="font-size:18px;font-weight:700;text-align:center">
+        </div>
+        <div class="form-group">
+          <label class="form-label">คำนวณจากทริป</label>
+          <select id="forecast-base" onchange="updateForecast(document.getElementById('forecast-days-input').value)">
+            <option value="all">ค่าเฉลี่ยทุกทริป</option>
+            ${tripStats.map(t=>`<option value="${t.id}">${t.flag} ${t.name}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div id="forecast-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--success)"></span>พฤติกรรมการใช้จ่ายของคุณ</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">สัดส่วนค่าใช้จ่ายเฉลี่ยต่อวัน แต่ละหมวด</p>
+      ${allCats.filter(c=>catAvgDay[c]>0).sort((a,b)=>catAvgDay[b]-catAvgDay[a]).map((cat,i)=>{
+        const maxCat=Math.max(...allCats.map(c=>catAvgDay[c]));
+        const pct=totalDays>0?((catAvgDay[cat]/globalAvgDay)*100).toFixed(0):0;
+        const colors=['#6c8fff','#4fd4c4','#f0a050','#e06070','#9f7fff','#4fd4a0','#aaa'];
+        return `<div class="cat-row">
+          <div style="font-size:18px;width:24px">${cat.split(' ')[0]}</div>
+          <div style="flex:1;font-size:13px">${cat}</div>
+          <div style="flex:1;padding:0 8px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${(catAvgDay[cat]/maxCat)*100}%;background:${colors[i%colors.length]}"></div></div></div>
+          <div style="font-size:12px;color:var(--text2);width:34px;text-align:right">${pct}%</div>
+          <div style="font-family:var(--font-display);font-size:13px;font-weight:600;min-width:80px;text-align:right">${fmtTHB(catAvgDay[cat])}/วัน</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+
+  // Trigger initial forecast calculation
+  updateForecast(7);
+}
+
+window.updateForecast=(days)=>{
+  days=parseInt(days)||7;
+  const baseId=document.getElementById('forecast-base')?.value||'all';
+  const tripStats_=trips.filter(t=>expenses.filter(e=>e.tripId===t.id).length>0).map(t=>{
+    const te=expenses.filter(e=>e.tripId===t.id);
+    const total=te.reduce((s,e)=>s+toTHB(e.amount,e.currency),0);
+    const dates=[...new Set(te.map(e=>e.date).filter(Boolean))];
+    const tripDays=t.start&&t.end?Math.ceil((new Date(t.end)-new Date(t.start))/86400000)+1:dates.length||1;
+    const catBreakdown={};
+    te.forEach(e=>{catBreakdown[e.category]=(catBreakdown[e.category]||0)+toTHB(e.amount,e.currency);});
+    return {id:t.id,days:tripDays,total,avgDay:total/tripDays,catBreakdown};
+  });
+
+  let avgDay,catAvgDay_={},usedDays=0;
+  if(baseId==='all'){
+    usedDays=tripStats_.reduce((s,t)=>s+t.days,0);
+    avgDay=tripStats_.reduce((s,t)=>s+t.total,0)/(usedDays||1);
+    const allCats_=['🍜 อาหาร','🚌 เดินทาง','🏨 ที่พัก','🎡 ท่องเที่ยว','🛍️ ช้อปปิ้ง','💊 สุขภาพ','📦 อื่นๆ'];
+    allCats_.forEach(cat=>{
+      catAvgDay_[cat]=tripStats_.reduce((s,t)=>s+(t.catBreakdown[cat]||0),0)/(usedDays||1);
+    });
+  } else {
+    const t=tripStats_.find(x=>x.id===baseId);
+    if(!t) return;
+    avgDay=t.avgDay;
+    usedDays=t.days;
+    catAvgDay_=Object.fromEntries(Object.entries(t.catBreakdown).map(([k,v])=>[k,v/t.days]));
+  }
+
+  const total=avgDay*days;
+  const colors=['#6c8fff','#4fd4c4','#f0a050','#e06070','#9f7fff','#4fd4a0','#aaa'];
+  const catEntries=Object.entries(catAvgDay_).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+
+  const el=document.getElementById('forecast-result');
+  if(!el) return;
+
+  // Status color
+  const warn=total>100000?'var(--danger)':total>50000?'var(--accent3)':'var(--success)';
+
+  el.innerHTML=`
+    <div style="background:var(--bg2);border:2px solid ${warn};border-radius:var(--r);padding:18px;text-align:center;margin-bottom:16px">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:6px">งบประมาณที่แนะนำสำหรับ ${days} วัน</div>
+      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:${warn}">${fmtTHB(total)}</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:6px">จากอัตราใช้จ่ายเฉลี่ย ${fmtTHB(avgDay)}/วัน</div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">แบ่งตามหมวดหมู่ (${days} วัน)</div>
+    ${catEntries.map(([cat,perDay],i)=>{
+      const catTotal=perDay*days;
+      const pct=total>0?((catTotal/total)*100).toFixed(0):0;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:16px;width:22px">${cat.split(' ')[0]}</div>
+        <div style="flex:1;font-size:13px">${cat}</div>
+        <div style="font-size:12px;color:var(--text2);width:30px;text-align:right">${pct}%</div>
+        <div style="font-family:var(--font-display);font-size:13px;font-weight:600;min-width:80px;text-align:right;color:${colors[i%colors.length]}">${fmtTHB(catTotal)}</div>
+      </div>`;
+    }).join('')}
+    <div style="margin-top:12px;padding:10px 14px;background:rgba(108,143,255,0.1);border-radius:var(--r-sm);font-size:13px;color:var(--accent)">
+      💡 ตัวเลขนี้คำนวณจากพฤติกรรมจริงของคุณ — ใช้เป็น <strong>งบขั้นต่ำ</strong> แล้วบวกเพิ่ม 10-20% สำหรับค่าฉุกเฉิน
+    </div>
+  `;
+};
+
 
 // ===== CONVERTER =====
 window.swapCurrency=()=>{
