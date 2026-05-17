@@ -6,560 +6,318 @@
 <title>Travel Money Planner</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
   :root {
-    --bg: #0d0f14;
-    --bg2: #161920;
-    --bg3: #1e2230;
-    --card: #1a1e2a;
-    --border: #2a2f3e;
-    --border2: #353b52;
-    --accent: #6c8fff;
-    --accent2: #4fd4c4;
-    --accent3: #f0a050;
-    --danger: #e06070;
-    --success: #4fd4a0;
-    --text: #e8eaf0;
-    --text2: #8890a8;
-    --text3: #555e78;
-    --font-main: 'Sarabun', sans-serif;
-    --font-display: 'Space Grotesk', sans-serif;
-    --r: 12px;
-    --r-sm: 8px;
+    --bg:#0d0f14;--bg2:#161920;--bg3:#1e2230;--card:#1a1e2a;
+    --border:#2a2f3e;--accent:#6c8fff;--accent2:#4fd4c4;--accent3:#f0a050;
+    --danger:#e06070;--success:#4fd4a0;--text:#e8eaf0;--text2:#8890a8;--text3:#555e78;
+    --font-main:'Sarabun',sans-serif;--font-display:'Space Grotesk',sans-serif;
+    --r:12px;--r-sm:8px;
   }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-main);font-size:15px;min-height:100vh;overflow-x:hidden;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* LOGIN SCREEN */
+  #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;text-align:center;}
+  .login-logo{font-size:56px;margin-bottom:16px;}
+  .login-title{font-family:var(--font-display);font-size:28px;font-weight:700;margin-bottom:8px;}
+  .login-sub{color:var(--text2);font-size:15px;margin-bottom:36px;line-height:1.6;}
+  .btn-google{display:inline-flex;align-items:center;gap:12px;background:#fff;color:#1a1a1a;border:none;border-radius:10px;padding:13px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-main);transition:all 0.15s;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
+  .btn-google:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,0,0,0.4);}
+  .btn-google img{width:22px;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-main);
-    font-size: 15px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  /* HEADER */
+  .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .header-logo{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:7px;}
+  .header-logo span{color:var(--text);}
+  .header-right{display:flex;align-items:center;gap:8px;}
+  .user-avatar{width:32px;height:32px;border-radius:50%;border:2px solid var(--accent);}
+  .user-name{font-size:13px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .btn-signout{background:none;border:1px solid var(--border);color:var(--text2);padding:5px 10px;border-radius:var(--r-sm);cursor:pointer;font-size:12px;font-family:var(--font-main);}
+  .btn-signout:hover{color:var(--danger);border-color:var(--danger);}
 
-  /* ===== HEADER ===== */
-  .header {
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-logo {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .header-logo span { color: var(--text); }
-  .header-nav { display: flex; gap: 4px; }
-  .nav-btn {
-    background: none;
-    border: none;
-    color: var(--text2);
-    padding: 7px 14px;
-    border-radius: var(--r-sm);
-    cursor: pointer;
-    font-family: var(--font-main);
-    font-size: 14px;
-    transition: all 0.15s;
-  }
-  .nav-btn:hover { background: var(--bg3); color: var(--text); }
-  .nav-btn.active { background: var(--accent); color: #fff; }
+  /* NAV */
+  .nav-bar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;}
+  .nav-bar::-webkit-scrollbar{display:none;}
+  .nav-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--text2);padding:11px 16px;cursor:pointer;font-family:var(--font-main);font-size:14px;white-space:nowrap;transition:all 0.15s;margin-bottom:-1px;}
+  .nav-btn:hover{color:var(--text);}
+  .nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 
-  /* ===== LAYOUT ===== */
-  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+  /* LAYOUT */
+  .container{max-width:860px;margin:0 auto;padding:18px 14px;}
+  .page{display:none;} .page.active{display:block;}
 
-  /* ===== PAGES ===== */
-  .page { display: none; }
-  .page.active { display: block; }
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;}
+  .card-title{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+  .card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 
-  /* ===== CARDS ===== */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  .card-title {
-    font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text2);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-title .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
+  /* STATS */
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;}
+  .stat-label{font-size:12px;color:var(--text2);margin-bottom:5px;}
+  .stat-value{font-family:var(--font-display);font-size:20px;font-weight:700;}
+  .stat-value.accent{color:var(--accent);} .stat-value.danger{color:var(--danger);} .stat-value.success{color:var(--success);}
 
-  /* ===== STATS ROW ===== */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .stat-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-    padding: 14px 16px;
-  }
-  .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
-  .stat-value { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--text); }
-  .stat-value.accent { color: var(--accent); }
-  .stat-value.danger { color: var(--danger); }
-  .stat-value.success { color: var(--success); }
-  .stat-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  /* FORMS */
+  .form-group{margin-bottom:13px;}
+  .form-label{display:block;font-size:13px;color:var(--text2);margin-bottom:5px;}
+  .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;}
+  input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:var(--font-main);font-size:14px;padding:9px 11px;outline:none;transition:border-color 0.15s;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+  select option{background:var(--bg2);}
+  textarea{resize:vertical;min-height:56px;}
 
-  /* ===== FORMS ===== */
-  .form-group { margin-bottom: 14px; }
-  .form-label {
-    display: block;
-    font-size: 13px;
-    color: var(--text2);
-    margin-bottom: 6px;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-  }
-  input, select, textarea {
-    width: 100%;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-    color: var(--text);
-    font-family: var(--font-main);
-    font-size: 14px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-  select option { background: var(--bg2); }
-  textarea { resize: vertical; min-height: 60px; }
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:none;border-radius:var(--r-sm);cursor:pointer;font-family:var(--font-main);font-size:14px;font-weight:500;transition:all 0.15s;}
+  .btn-primary{background:var(--accent);color:#fff;} .btn-primary:hover{background:#5577ee;}
+  .btn-success{background:var(--success);color:#0d2e20;}
+  .btn-sheets{background:#1a7340;color:#fff;} .btn-sheets:hover{background:#155c34;}
+  .btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger);padding:5px 10px;font-size:12px;}
+  .btn-danger:hover{background:var(--danger);color:#fff;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2);}
+  .btn-ghost:hover{background:var(--bg3);color:var(--text);}
+  .btn-sm{padding:6px 12px;font-size:13px;}
 
-  /* ===== BUTTONS ===== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 18px;
-    border: none;
-    border-radius: var(--r-sm);
-    cursor: pointer;
-    font-family: var(--font-main);
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.15s;
-  }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #5577ee; }
-  .btn-success { background: var(--success); color: #0d2e20; }
-  .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 6px 10px; font-size: 12px; }
-  .btn-danger:hover { background: var(--danger); color: #fff; }
-  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text2); }
-  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
-  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  /* TRIPS */
+  .trip-list{display:flex;flex-direction:column;gap:9px;}
+  .trip-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:13px 15px;cursor:pointer;transition:border-color 0.15s;display:flex;align-items:center;justify-content:space-between;}
+  .trip-item:hover,.trip-item.selected{border-color:var(--accent);}
+  .trip-item.selected{background:rgba(108,143,255,0.08);}
+  .trip-name{font-weight:600;font-size:15px;}
+  .trip-meta{font-size:12px;color:var(--text2);margin-top:2px;}
+  .trip-flag{font-size:22px;margin-right:9px;}
+  .trip-left{display:flex;align-items:center;}
 
-  /* ===== TRIP LIST ===== */
-  .trip-list { display: flex; flex-direction: column; gap: 10px; }
-  .trip-item {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .trip-item:hover, .trip-item.selected { border-color: var(--accent); }
-  .trip-item.selected { background: rgba(108,143,255,0.08); }
-  .trip-name { font-weight: 600; font-size: 15px; }
-  .trip-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
-  .trip-flag { font-size: 22px; margin-right: 10px; }
-  .trip-left { display: flex; align-items: center; }
-  .trip-budget-badge {
-    font-size: 12px;
-    background: rgba(108,143,255,0.15);
-    color: var(--accent);
-    padding: 3px 9px;
-    border-radius: 20px;
-  }
+  /* PROGRESS */
+  .progress-bar-bg{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-top:7px;}
+  .progress-bar-fill{height:100%;border-radius:3px;transition:width 0.4s ease;}
+  .progress-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-top:4px;}
 
-  /* ===== EXPENSE LIST ===== */
-  .expense-list { display: flex; flex-direction: column; gap: 8px; }
-  .expense-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 14px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-  }
-  .expense-icon {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  .expense-info { flex: 1; min-width: 0; }
-  .expense-desc { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .expense-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .expense-amount { text-align: right; flex-shrink: 0; }
-  .expense-orig { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
-  .expense-thb { font-size: 12px; color: var(--text2); }
+  /* EXPENSES */
+  .expense-list{display:flex;flex-direction:column;gap:7px;}
+  .expense-item{display:flex;align-items:center;gap:11px;padding:10px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);}
+  .expense-icon{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+  .expense-info{flex:1;min-width:0;}
+  .expense-desc{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .expense-meta{font-size:12px;color:var(--text2);margin-top:2px;}
+  .expense-amount{text-align:right;flex-shrink:0;}
+  .expense-orig{font-family:var(--font-display);font-size:14px;font-weight:600;}
+  .expense-thb{font-size:11px;color:var(--text2);}
 
-  /* ===== PROGRESS BAR ===== */
-  .progress-wrap { margin-top: 10px; }
-  .progress-bar-bg {
-    height: 6px;
-    background: var(--bg2);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.4s ease;
-  }
-  .progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-top: 5px; }
+  /* CATS */
+  .cat-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+  .cat-chip{padding:5px 11px;border-radius:20px;border:1px solid var(--border);font-size:13px;cursor:pointer;transition:all 0.15s;color:var(--text2);background:none;}
+  .cat-chip:hover{border-color:var(--accent);color:var(--accent);}
+  .cat-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
-  /* ===== CATEGORY CHIPS ===== */
-  .cat-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .cat-chip {
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--text2);
-    background: none;
-  }
-  .cat-chip:hover { border-color: var(--accent); color: var(--accent); }
-  .cat-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* DATE SECTION */
+  .date-section{margin-bottom:18px;}
+  .date-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+  .date-label{font-size:14px;font-weight:600;}
+  .date-total{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--accent3);}
 
-  /* ===== CURRENCY CONVERTER ===== */
-  .converter-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .converter-result {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-    padding: 12px 16px;
-    text-align: center;
-    margin-top: 12px;
-  }
-  .converter-result .big { font-size: 28px; font-family: var(--font-display); font-weight: 700; color: var(--accent2); }
-  .converter-result .small { font-size: 13px; color: var(--text2); margin-top: 4px; }
+  /* SUMMARY */
+  .cat-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);}
+  .cat-row:last-child{border-bottom:none;}
+  .divider{height:1px;background:var(--border);margin:14px 0;}
+  .donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .donut-legend{flex:1;min-width:130px;}
+  .legend-item{display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:13px;}
+  .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 
-  /* ===== DATE SECTION ===== */
-  .date-section { margin-bottom: 20px; }
-  .date-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-  .date-label { font-size: 14px; font-weight: 600; color: var(--text); }
-  .date-total { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--accent3); }
+  /* CONVERTER */
+  .converter-result{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;text-align:center;margin-top:11px;}
+  .converter-result .big{font-size:26px;font-family:var(--font-display);font-weight:700;color:var(--accent2);}
+  .converter-result .small{font-size:13px;color:var(--text2);margin-top:4px;}
 
-  /* ===== CATEGORY SUMMARY ===== */
-  .cat-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .cat-row:last-child { border-bottom: none; }
-  .cat-icon-sm { font-size: 18px; width: 24px; text-align: center; }
-  .cat-name-sm { flex: 1; font-size: 14px; }
-  .cat-amount-sm { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
-  .cat-pct { font-size: 12px; color: var(--text2); width: 36px; text-align: right; }
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;align-items:flex-end;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  @media(min-width:600px){.modal-overlay{align-items:center;}}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp 0.2s ease;}
+  @media(min-width:600px){.modal{border-radius:var(--r);}}
+  @keyframes slideUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .modal-title{font-family:var(--font-display);font-size:16px;font-weight:700;}
+  .modal-close{background:none;border:none;color:var(--text2);font-size:21px;cursor:pointer;padding:3px;line-height:1;}
 
-  /* ===== DIVIDER ===== */
-  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  /* SECTION HEADER */
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .section-title{font-family:var(--font-display);font-size:16px;font-weight:700;}
 
-  /* ===== EMPTY STATE ===== */
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--text2);
-  }
-  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; }
+  /* RATE INFO */
+  .rate-info-bar{background:rgba(79,212,196,0.1);border:1px solid rgba(79,212,196,0.25);border-radius:var(--r-sm);padding:8px 13px;font-size:12px;color:var(--accent2);margin-bottom:14px;}
 
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 200;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  @media (min-width: 600px) {
-    .modal-overlay { align-items: center; }
-  }
-  .modal {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--r) var(--r) 0 0;
-    padding: 24px 20px;
-    width: 100%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideUp 0.2s ease;
-  }
-  @media (min-width: 600px) {
-    .modal { border-radius: var(--r); }
-  }
-  @keyframes slideUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .modal-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
-  .modal-close {
-    background: none;
-    border: none;
-    color: var(--text2);
-    font-size: 22px;
-    cursor: pointer;
-    padding: 4px;
-    line-height: 1;
-  }
+  /* SYNC STATUS */
+  .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:20px;}
+  .sync-ok{background:rgba(79,212,160,0.15);color:var(--success);}
+  .sync-loading{background:rgba(108,143,255,0.15);color:var(--accent);}
+  .sync-err{background:rgba(224,96,112,0.15);color:var(--danger);}
 
-  /* ===== SECTION HEADER ===== */
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: var(--font-display);
-    font-size: 16px;
-    font-weight: 700;
-  }
+  /* TOAST */
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:11px 20px;border-radius:24px;font-size:14px;z-index:999;opacity:0;transition:opacity 0.2s;pointer-events:none;white-space:nowrap;}
+  #toast.show{opacity:1;}
 
-  /* ===== RATE INFO ===== */
-  .rate-info-bar {
-    background: rgba(79,212,196,0.1);
-    border: 1px solid rgba(79,212,196,0.25);
-    border-radius: var(--r-sm);
-    padding: 8px 14px;
-    font-size: 12px;
-    color: var(--accent2);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  /* EMPTY STATE */
+  .empty-state{text-align:center;padding:36px 18px;color:var(--text2);}
+  .empty-state .icon{font-size:38px;margin-bottom:11px;}
+  .empty-state p{font-size:14px;}
 
-  /* ===== DONUT CHART ===== */
-  .donut-wrap { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .donut-legend { flex: 1; min-width: 140px; }
-  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 480px) {
-    .header-logo { font-size: 16px; }
-    .nav-btn { padding: 7px 10px; font-size: 13px; }
-    .stat-value { font-size: 18px; }
-    .container { padding: 14px 12px; }
+  @media(max-width:480px){
+    .header-logo{font-size:15px;}
+    .stat-value{font-size:17px;}
+    .container{padding:12px 10px;}
+    .user-name{display:none;}
   }
-
-  /* ===== TABS ===== */
-  .tab-row { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
-  .tab-btn {
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--text2);
-    padding: 8px 14px;
-    cursor: pointer;
-    font-family: var(--font-main);
-    font-size: 14px;
-    transition: all 0.15s;
-    margin-bottom: -1px;
-  }
-  .tab-btn:hover { color: var(--text); }
-  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-logo">✈️ <span>Travel</span>Money</div>
-  <div class="header-nav">
-    <button class="nav-btn active" onclick="showPage('trips')">ทริป</button>
-    <button class="nav-btn" onclick="showPage('expenses')">รายจ่าย</button>
-    <button class="nav-btn" onclick="showPage('summary')">สรุป</button>
-    <button class="nav-btn" onclick="showPage('converter')">แปลงเงิน</button>
-  </div>
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-logo">✈️</div>
+  <div class="login-title">Travel Money Planner</div>
+  <div class="login-sub">วางแผนงบเที่ยว บันทึกรายจ่าย แปลงค่าเงิน<br>ข้อมูล sync ทุกอุปกรณ์แบบ real-time</div>
+  <button class="btn-google" onclick="signInGoogle()">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+    เข้าสู่ระบบด้วย Google
+  </button>
 </div>
 
-<div class="container">
-
-  <!-- ===== PAGE: TRIPS ===== -->
-  <div id="page-trips" class="page active">
-    <div class="section-header">
-      <div class="section-title">🗺️ แผนทริปของฉัน</div>
-      <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-trip')">+ เพิ่มทริป</button>
-    </div>
-    <div id="trip-list" class="trip-list">
-      <div class="empty-state"><div class="icon">🧳</div><p>ยังไม่มีทริป กด "+ เพิ่มทริป" เพื่อเริ่ม!</p></div>
+<!-- MAIN APP -->
+<div id="main-app" style="display:none">
+  <div class="header">
+    <div class="header-logo">✈️ <span>Travel</span>Money</div>
+    <div class="header-right">
+      <img id="user-avatar" class="user-avatar" src="" alt="" style="display:none">
+      <span id="user-name" class="user-name"></span>
+      <div id="sync-status" class="sync-badge sync-ok">● sync</div>
+      <button class="btn-signout" onclick="signOut()">ออก</button>
     </div>
   </div>
+  <div class="nav-bar">
+    <button class="nav-btn active" onclick="showPage('trips')">🗺️ ทริป</button>
+    <button class="nav-btn" onclick="showPage('expenses')">💳 รายจ่าย</button>
+    <button class="nav-btn" onclick="showPage('summary')">📊 สรุป</button>
+    <button class="nav-btn" onclick="showPage('converter')">💱 แปลงเงิน</button>
+  </div>
 
-  <!-- ===== PAGE: EXPENSES ===== -->
-  <div id="page-expenses" class="page">
-    <div id="expense-trip-info" class="card" style="display:none">
-      <div id="expense-trip-header"></div>
-      <div class="stats-row" id="expense-stats-row"></div>
-    </div>
-    <div id="no-trip-selected" class="empty-state">
-      <div class="icon">✈️</div>
-      <p>เลือกทริปก่อนเพื่อบันทึกรายจ่าย</p>
-      <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="showPage('trips')">ไปเลือกทริป</button>
-    </div>
-    <div id="expense-panel" style="display:none">
+  <div class="container">
+
+    <!-- TRIPS PAGE -->
+    <div id="page-trips" class="page active">
       <div class="section-header">
-        <div class="section-title">💳 บันทึกรายจ่าย</div>
-        <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-expense')">+ เพิ่ม</button>
+        <div class="section-title">🗺️ ทริปของฉัน</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-trip')">+ เพิ่มทริป</button>
       </div>
-      <div class="cat-chips" id="filter-chips">
-        <button class="cat-chip active" onclick="filterExpenses('all', this)">ทั้งหมด</button>
-        <button class="cat-chip" onclick="filterExpenses('🍜 อาหาร', this)">🍜 อาหาร</button>
-        <button class="cat-chip" onclick="filterExpenses('🚌 เดินทาง', this)">🚌 เดินทาง</button>
-        <button class="cat-chip" onclick="filterExpenses('🏨 ที่พัก', this)">🏨 ที่พัก</button>
-        <button class="cat-chip" onclick="filterExpenses('🎡 ท่องเที่ยว', this)">🎡 ท่องเที่ยว</button>
-        <button class="cat-chip" onclick="filterExpenses('🛍️ ช้อปปิ้ง', this)">🛍️ ช้อปปิ้ง</button>
-        <button class="cat-chip" onclick="filterExpenses('💊 สุขภาพ', this)">💊 สุขภาพ</button>
-        <button class="cat-chip" onclick="filterExpenses('📦 อื่นๆ', this)">📦 อื่นๆ</button>
-      </div>
-      <div id="expense-list" class="expense-list"></div>
-    </div>
-  </div>
-
-  <!-- ===== PAGE: SUMMARY ===== -->
-  <div id="page-summary" class="page">
-    <div id="summary-content">
-      <div class="empty-state"><div class="icon">📊</div><p>เลือกทริปเพื่อดูสรุปรายจ่าย</p>
-        <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="showPage('trips')">ไปเลือกทริป</button>
+      <div id="trip-list" class="trip-list">
+        <div class="empty-state"><div class="icon">🧳</div><p>กำลังโหลด...</p></div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== PAGE: CONVERTER ===== -->
-  <div id="page-converter" class="page">
-    <div class="card">
-      <div class="card-title"><span class="dot"></span>แปลงค่าเงิน</div>
-      <div class="rate-info-bar">💡 อัตราแลกเปลี่ยนโดยประมาณ — อัปเดตได้ในการตั้งค่า</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">จำนวนเงิน</label>
-          <input type="number" id="conv-amount" value="1000" oninput="doConvert()" min="0">
+    <!-- EXPENSES PAGE -->
+    <div id="page-expenses" class="page">
+      <div id="expense-trip-info" class="card" style="display:none">
+        <div id="expense-trip-header"></div>
+        <div class="stats-row" id="expense-stats-row"></div>
+      </div>
+      <div id="no-trip-selected" class="empty-state">
+        <div class="icon">✈️</div><p>เลือกทริปก่อนเพื่อบันทึกรายจ่าย</p>
+        <button class="btn btn-ghost btn-sm" style="margin-top:11px" onclick="showPage('trips')">ไปเลือกทริป</button>
+      </div>
+      <div id="expense-panel" style="display:none">
+        <div class="section-header">
+          <div class="section-title">💳 รายจ่าย</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-expense')">+ เพิ่ม</button>
         </div>
-        <div class="form-group">
-          <label class="form-label">จากสกุลเงิน</label>
-          <select id="conv-from" onchange="doConvert()">
-            <option value="JPY">🇯🇵 เยน (JPY)</option>
-            <option value="USD">🇺🇸 ดอลลาร์ (USD)</option>
-            <option value="EUR">🇪🇺 ยูโร (EUR)</option>
-            <option value="GBP">🇬🇧 ปอนด์ (GBP)</option>
-            <option value="KRW">🇰🇷 วอน (KRW)</option>
-            <option value="SGD">🇸🇬 ดอลลาร์ สิงคโปร์ (SGD)</option>
-            <option value="HKD">🇭🇰 ดอลลาร์ฮ่องกง (HKD)</option>
-            <option value="AUD">🇦🇺 ดอลลาร์ออสเตรเลีย (AUD)</option>
-            <option value="CNY">🇨🇳 หยวน (CNY)</option>
-            <option value="THB">🇹🇭 บาท (THB)</option>
-            <option value="TWD">🇹🇼 ดอลลาร์ไต้หวัน (TWD)</option>
-            <option value="VND">🇻🇳 ดอง (VND)</option>
-            <option value="MYR">🇲🇾 ริงกิต (MYR)</option>
-          </select>
+        <div class="cat-chips" id="filter-chips">
+          <button class="cat-chip active" onclick="filterExpenses('all',this)">ทั้งหมด</button>
+          <button class="cat-chip" onclick="filterExpenses('🍜 อาหาร',this)">🍜 อาหาร</button>
+          <button class="cat-chip" onclick="filterExpenses('🚌 เดินทาง',this)">🚌 เดินทาง</button>
+          <button class="cat-chip" onclick="filterExpenses('🏨 ที่พัก',this)">🏨 ที่พัก</button>
+          <button class="cat-chip" onclick="filterExpenses('🎡 ท่องเที่ยว',this)">🎡 ท่องเที่ยว</button>
+          <button class="cat-chip" onclick="filterExpenses('🛍️ ช้อปปิ้ง',this)">🛍️ ช้อปปิ้ง</button>
+          <button class="cat-chip" onclick="filterExpenses('💊 สุขภาพ',this)">💊 สุขภาพ</button>
+          <button class="cat-chip" onclick="filterExpenses('📦 อื่นๆ',this)">📦 อื่นๆ</button>
         </div>
-        <div class="form-group">
-          <label class="form-label">เป็นสกุลเงิน</label>
-          <select id="conv-to" onchange="doConvert()">
-            <option value="THB" selected>🇹🇭 บาท (THB)</option>
-            <option value="JPY">🇯🇵 เยน (JPY)</option>
-            <option value="USD">🇺🇸 ดอลลาร์ (USD)</option>
-            <option value="EUR">🇪🇺 ยูโร (EUR)</option>
-            <option value="GBP">🇬🇧 ปอนด์ (GBP)</option>
-            <option value="KRW">🇰🇷 วอน (KRW)</option>
-            <option value="SGD">🇸🇬 ดอลลาร์ สิงคโปร์ (SGD)</option>
-            <option value="HKD">🇭🇰 ดอลลาร์ฮ่องกง (HKD)</option>
-            <option value="AUD">🇦🇺 ดอลลาร์ออสเตรเลีย (AUD)</option>
-            <option value="CNY">🇨🇳 หยวน (CNY)</option>
-            <option value="TWD">🇹🇼 ดอลลาร์ไต้หวัน (TWD)</option>
-            <option value="VND">🇻🇳 ดอง (VND)</option>
-            <option value="MYR">🇲🇾 ริงกิต (MYR)</option>
-          </select>
+        <div id="expense-list" class="expense-list"></div>
+      </div>
+    </div>
+
+    <!-- SUMMARY PAGE -->
+    <div id="page-summary" class="page">
+      <div id="summary-content">
+        <div class="empty-state"><div class="icon">📊</div><p>เลือกทริปเพื่อดูสรุป</p>
+          <button class="btn btn-ghost btn-sm" style="margin-top:11px" onclick="showPage('trips')">ไปเลือกทริป</button>
         </div>
       </div>
-      <div class="converter-result">
-        <div class="big" id="conv-result">—</div>
-        <div class="small" id="conv-rate-text"></div>
+    </div>
+
+    <!-- CONVERTER PAGE -->
+    <div id="page-converter" class="page">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>แปลงค่าเงิน</div>
+        <div class="rate-info-bar">💡 อัตราโดยประมาณ — แก้ไขได้ด้านล่าง</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">จำนวนเงิน</label>
+            <input type="number" id="conv-amount" value="1000" oninput="doConvert()" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">จาก</label>
+            <select id="conv-from" onchange="doConvert()">
+              <option value="JPY">🇯🇵 JPY เยน</option>
+              <option value="USD">🇺🇸 USD ดอลลาร์</option>
+              <option value="EUR">🇪🇺 EUR ยูโร</option>
+              <option value="GBP">🇬🇧 GBP ปอนด์</option>
+              <option value="KRW">🇰🇷 KRW วอน</option>
+              <option value="SGD">🇸🇬 SGD สิงคโปร์</option>
+              <option value="HKD">🇭🇰 HKD ฮ่องกง</option>
+              <option value="AUD">🇦🇺 AUD ออสเตรเลีย</option>
+              <option value="CNY">🇨🇳 CNY หยวน</option>
+              <option value="TWD">🇹🇼 TWD ไต้หวัน</option>
+              <option value="VND">🇻🇳 VND ดอง</option>
+              <option value="MYR">🇲🇾 MYR ริงกิต</option>
+              <option value="THB">🇹🇭 THB บาท</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">เป็น</label>
+            <select id="conv-to" onchange="doConvert()">
+              <option value="THB" selected>🇹🇭 THB บาท</option>
+              <option value="JPY">🇯🇵 JPY เยน</option>
+              <option value="USD">🇺🇸 USD ดอลลาร์</option>
+              <option value="EUR">🇪🇺 EUR ยูโร</option>
+              <option value="GBP">🇬🇧 GBP ปอนด์</option>
+              <option value="KRW">🇰🇷 KRW วอน</option>
+              <option value="SGD">🇸🇬 SGD สิงคโปร์</option>
+              <option value="HKD">🇭🇰 HKD ฮ่องกง</option>
+              <option value="AUD">🇦🇺 AUD ออสเตรเลีย</option>
+              <option value="CNY">🇨🇳 CNY หยวน</option>
+              <option value="TWD">🇹🇼 TWD ไต้หวัน</option>
+              <option value="VND">🇻🇳 VND ดอง</option>
+              <option value="MYR">🇲🇾 MYR ริงกิต</option>
+            </select>
+          </div>
+        </div>
+        <div class="converter-result">
+          <div class="big" id="conv-result">—</div>
+          <div class="small" id="conv-rate-text"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>ตั้งค่าอัตราแลกเปลี่ยน (→ THB)</div>
+        <div id="rate-editor"></div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>ตั้งค่าอัตราแลกเปลี่ยน</div>
-      <p style="font-size:13px; color:var(--text2); margin-bottom:14px;">ปรับอัตราแลกเปลี่ยนเป็น THB ตามใจ (ต่อ 1 หน่วย)</p>
-      <div id="rate-editor"></div>
-    </div>
-  </div>
+  </div><!-- /container -->
+</div><!-- /main-app -->
 
-</div><!-- /container -->
-
-<!-- ===== MODAL: ADD TRIP ===== -->
+<!-- MODAL: ADD TRIP -->
 <div class="modal-overlay" id="modal-add-trip">
   <div class="modal">
     <div class="modal-header">
@@ -572,7 +330,7 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">ประเทศ / ธงชาติ</label>
+        <label class="form-label">ประเทศ</label>
         <select id="trip-flag">
           <option value="🇯🇵">🇯🇵 ญี่ปุ่น</option>
           <option value="🇰🇷">🇰🇷 เกาหลี</option>
@@ -592,18 +350,18 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">สกุลเงินท้องถิ่น</label>
+        <label class="form-label">สกุลเงิน</label>
         <select id="trip-currency">
           <option value="JPY">JPY - เยน</option>
           <option value="KRW">KRW - วอน</option>
           <option value="USD">USD - ดอลลาร์</option>
           <option value="EUR">EUR - ยูโร</option>
           <option value="GBP">GBP - ปอนด์</option>
-          <option value="SGD">SGD - ดอลลาร์สิงคโปร์</option>
-          <option value="HKD">HKD - ดอลลาร์ฮ่องกง</option>
-          <option value="AUD">AUD - ดอลลาร์ออสเตรเลีย</option>
+          <option value="SGD">SGD - สิงคโปร์</option>
+          <option value="HKD">HKD - ฮ่องกง</option>
+          <option value="AUD">AUD - ออสเตรเลีย</option>
           <option value="CNY">CNY - หยวน</option>
-          <option value="TWD">TWD - ดอลลาร์ไต้หวัน</option>
+          <option value="TWD">TWD - ไต้หวัน</option>
           <option value="MYR">MYR - ริงกิต</option>
           <option value="VND">VND - ดอง</option>
           <option value="THB">THB - บาท</option>
@@ -612,7 +370,7 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">วันเริ่มต้น</label>
+        <label class="form-label">วันเริ่ม</label>
         <input type="date" id="trip-start">
       </div>
       <div class="form-group">
@@ -624,11 +382,11 @@
       <label class="form-label">งบประมาณรวม (THB)</label>
       <input type="number" id="trip-budget" placeholder="เช่น 50000" min="0">
     </div>
-    <button class="btn btn-primary" style="width:100%" onclick="addTrip()">สร้างทริป</button>
+    <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="addTrip()">สร้างทริป</button>
   </div>
 </div>
 
-<!-- ===== MODAL: ADD EXPENSE ===== -->
+<!-- MODAL: ADD EXPENSE -->
 <div class="modal-overlay" id="modal-add-expense">
   <div class="modal">
     <div class="modal-header">
@@ -642,28 +400,28 @@
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">จำนวนเงิน</label>
-        <input type="number" id="exp-amount" placeholder="0" min="0" oninput="updateExpenseConvert()">
+        <input type="number" id="exp-amount" placeholder="0" min="0" oninput="updateExpConv()">
       </div>
       <div class="form-group">
         <label class="form-label">สกุลเงิน</label>
-        <select id="exp-currency" onchange="updateExpenseConvert()">
-          <option value="JPY">JPY - เยน</option>
-          <option value="KRW">KRW - วอน</option>
-          <option value="USD">USD - ดอลลาร์</option>
-          <option value="EUR">EUR - ยูโร</option>
-          <option value="GBP">GBP - ปอนด์</option>
-          <option value="SGD">SGD - SGD</option>
-          <option value="HKD">HKD - HKD</option>
-          <option value="AUD">AUD - AUD</option>
-          <option value="CNY">CNY - หยวน</option>
-          <option value="TWD">TWD - TWD</option>
-          <option value="MYR">MYR - ริงกิต</option>
-          <option value="VND">VND - ดอง</option>
-          <option value="THB">THB - บาท</option>
+        <select id="exp-currency" onchange="updateExpConv()">
+          <option value="JPY">JPY เยน</option>
+          <option value="KRW">KRW วอน</option>
+          <option value="USD">USD ดอลลาร์</option>
+          <option value="EUR">EUR ยูโร</option>
+          <option value="GBP">GBP ปอนด์</option>
+          <option value="SGD">SGD</option>
+          <option value="HKD">HKD</option>
+          <option value="AUD">AUD</option>
+          <option value="CNY">CNY หยวน</option>
+          <option value="TWD">TWD</option>
+          <option value="MYR">MYR ริงกิต</option>
+          <option value="VND">VND ดอง</option>
+          <option value="THB">THB บาท</option>
         </select>
       </div>
     </div>
-    <div id="exp-convert-preview" style="font-size:13px;color:var(--accent2);margin-bottom:10px;"></div>
+    <div id="exp-conv-preview" style="font-size:13px;color:var(--accent2);margin-bottom:10px;min-height:18px;"></div>
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">หมวดหมู่</label>
@@ -683,443 +441,498 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">หมายเหตุ (ไม่บังคับ)</label>
+      <label class="form-label">หมายเหตุ</label>
       <textarea id="exp-note" placeholder="..."></textarea>
     </div>
-    <button class="btn btn-primary" style="width:100%" onclick="addExpense()">บันทึก</button>
+    <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="addExpense()">บันทึก</button>
   </div>
 </div>
 
-<script>
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, doc, addDoc, setDoc, deleteDoc,
+  onSnapshot, query, where, orderBy, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ===== FIREBASE INIT =====
+const firebaseConfig = {
+  apiKey: "AIzaSyBIWf4tMh2SPv_PX9O2ah6rW1AXvwHtzCE",
+  authDomain: "ravel-planner-c20b0.firebaseapp.com",
+  projectId: "ravel-planner-c20b0",
+  storageBucket: "ravel-planner-c20b0.firebasestorage.app",
+  messagingSenderId: "777885838906",
+  appId: "1:777885838906:web:e093880d19a24437d54f03"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
 // ===== STATE =====
-let trips = JSON.parse(localStorage.getItem('tmp_trips') || '[]');
-let expenses = JSON.parse(localStorage.getItem('tmp_expenses') || '[]');
-let selectedTripId = localStorage.getItem('tmp_selected') || null;
+let currentUser = null;
+let trips = [];
+let expenses = [];
+let selectedTripId = null;
 let currentFilter = 'all';
+let unsubTrips = null;
+let unsubExpenses = null;
 
 const RATES = JSON.parse(localStorage.getItem('tmp_rates') || JSON.stringify({
-  JPY: 0.235, KRW: 0.026, USD: 33.5, EUR: 36.2, GBP: 42.1,
-  SGD: 24.8, HKD: 4.3, AUD: 22.0, CNY: 4.6, TWD: 1.05,
-  MYR: 7.4, VND: 0.0014, THB: 1
+  JPY:0.235,KRW:0.026,USD:33.5,EUR:36.2,GBP:42.1,
+  SGD:24.8,HKD:4.3,AUD:22.0,CNY:4.6,TWD:1.05,
+  MYR:7.4,VND:0.0014,THB:1
 }));
 
-function saveAll() {
-  localStorage.setItem('tmp_trips', JSON.stringify(trips));
-  localStorage.setItem('tmp_expenses', JSON.stringify(expenses));
-  localStorage.setItem('tmp_selected', selectedTripId || '');
-  localStorage.setItem('tmp_rates', JSON.stringify(RATES));
+// ===== HELPERS =====
+function toTHB(amount,currency){return amount*(RATES[currency]||1);}
+function fmt(n,currency){
+  if(['JPY','KRW','VND'].includes(currency)) return Math.round(n).toLocaleString();
+  return parseFloat(n.toFixed(2)).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2});
+}
+function fmtTHB(n){return '฿'+Math.round(n).toLocaleString();}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+function setSyncStatus(state){
+  const el=document.getElementById('sync-status');
+  el.className='sync-badge';
+  if(state==='ok'){el.classList.add('sync-ok');el.textContent='● sync';}
+  else if(state==='loading'){el.classList.add('sync-loading');el.textContent='↻ sync...';}
+  else{el.classList.add('sync-err');el.textContent='✕ offline';}
 }
 
-function toTHB(amount, currency) {
-  return amount * (RATES[currency] || 1);
-}
+// ===== AUTH =====
+window.signInGoogle = async()=>{
+  try{ await signInWithPopup(auth,provider); }
+  catch(e){ alert('เข้าสู่ระบบไม่สำเร็จ: '+e.message); }
+};
+window.signOut = async()=>{
+  if(unsubTrips) unsubTrips();
+  if(unsubExpenses) unsubExpenses();
+  await fbSignOut(auth);
+};
 
-function fmt(n, currency) {
-  if (currency === 'JPY' || currency === 'KRW' || currency === 'VND') return Math.round(n).toLocaleString();
-  return parseFloat(n.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:2});
-}
+onAuthStateChanged(auth, user=>{
+  currentUser=user;
+  if(user){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('main-app').style.display='block';
+    document.getElementById('user-name').textContent=user.displayName||user.email;
+    const av=document.getElementById('user-avatar');
+    if(user.photoURL){av.src=user.photoURL;av.style.display='block';}
+    subscribeData();
+    initRateEditor();
+    doConvert();
+  } else {
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('main-app').style.display='none';
+    trips=[];expenses=[];
+  }
+});
 
-function fmtTHB(n) {
-  return '฿' + parseFloat(n.toFixed(0)).toLocaleString();
+// ===== FIRESTORE REALTIME =====
+function subscribeData(){
+  if(!currentUser) return;
+  setSyncStatus('loading');
+
+  // Trips
+  const tripsQ=query(collection(db,'trips'),where('uid','==',currentUser.uid),orderBy('createdAt','desc'));
+  unsubTrips=onSnapshot(tripsQ,snap=>{
+    trips=snap.docs.map(d=>({id:d.id,...d.data()}));
+    setSyncStatus('ok');
+    renderTrips();
+    if(document.getElementById('page-expenses').classList.contains('active')) renderExpenses();
+    if(document.getElementById('page-summary').classList.contains('active')) renderSummary();
+  },()=>setSyncStatus('err'));
+
+  // Expenses
+  const expQ=query(collection(db,'expenses'),where('uid','==',currentUser.uid),orderBy('createdAt','desc'));
+  unsubExpenses=onSnapshot(expQ,snap=>{
+    expenses=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(document.getElementById('page-expenses').classList.contains('active')) renderExpenses();
+    if(document.getElementById('page-summary').classList.contains('active')) renderSummary();
+    renderTrips();
+  },()=>setSyncStatus('err'));
 }
 
 // ===== PAGE NAV =====
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  const btns = document.querySelectorAll('.nav-btn');
-  const map = {trips:0, expenses:1, summary:2, converter:3};
-  btns[map[name]].classList.add('active');
-  if (name === 'expenses') renderExpenses();
-  if (name === 'summary') renderSummary();
-  if (name === 'converter') { initRateEditor(); doConvert(); }
-}
+window.showPage=name=>{
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const map={trips:0,expenses:1,summary:2,converter:3};
+  document.querySelectorAll('.nav-btn')[map[name]].classList.add('active');
+  if(name==='expenses') renderExpenses();
+  if(name==='summary') renderSummary();
+  if(name==='converter'){initRateEditor();doConvert();}
+};
 
 // ===== MODAL =====
-function openModal(id) {
+window.openModal=id=>{
   document.getElementById(id).classList.add('open');
-  if (id === 'modal-add-expense' && selectedTripId) {
-    const trip = trips.find(t => t.id === selectedTripId);
-    if (trip) {
-      document.getElementById('exp-currency').value = trip.currency;
-      updateExpenseConvert();
-    }
-    const today = new Date().toISOString().slice(0,10);
-    document.getElementById('exp-date').value = today;
+  if(id==='modal-add-expense'&&selectedTripId){
+    const trip=trips.find(t=>t.id===selectedTripId);
+    if(trip) document.getElementById('exp-currency').value=trip.currency;
+    document.getElementById('exp-date').value=new Date().toISOString().slice(0,10);
+    updateExpConv();
   }
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', function(e) {
-    if (e.target === this) this.classList.remove('open');
-  });
+};
+window.closeModal=id=>document.getElementById(id).classList.remove('open');
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click',function(e){if(e.target===this) this.classList.remove('open');});
 });
 
 // ===== TRIPS =====
-function addTrip() {
-  const name = document.getElementById('trip-name').value.trim();
-  const flag = document.getElementById('trip-flag').value;
-  const currency = document.getElementById('trip-currency').value;
-  const start = document.getElementById('trip-start').value;
-  const end = document.getElementById('trip-end').value;
-  const budget = parseFloat(document.getElementById('trip-budget').value) || 0;
-  if (!name) { alert('กรุณาใส่ชื่อทริป'); return; }
-  const trip = { id: Date.now().toString(), name, flag, currency, start, end, budget };
-  trips.push(trip);
-  saveAll();
-  closeModal('modal-add-trip');
-  document.getElementById('trip-name').value = '';
-  document.getElementById('trip-budget').value = '';
-  renderTrips();
-}
+window.addTrip=async()=>{
+  if(!currentUser) return;
+  const name=document.getElementById('trip-name').value.trim();
+  if(!name){alert('กรุณาใส่ชื่อทริป');return;}
+  setSyncStatus('loading');
+  try{
+    await addDoc(collection(db,'trips'),{
+      uid:currentUser.uid,
+      name,
+      flag:document.getElementById('trip-flag').value,
+      currency:document.getElementById('trip-currency').value,
+      start:document.getElementById('trip-start').value,
+      end:document.getElementById('trip-end').value,
+      budget:parseFloat(document.getElementById('trip-budget').value)||0,
+      createdAt:serverTimestamp()
+    });
+    closeModal('modal-add-trip');
+    document.getElementById('trip-name').value='';
+    document.getElementById('trip-budget').value='';
+    showToast('✅ สร้างทริปแล้ว');
+  }catch(e){alert('เกิดข้อผิดพลาด: '+e.message);}
+};
 
-function renderTrips() {
-  const el = document.getElementById('trip-list');
-  if (!trips.length) {
-    el.innerHTML = '<div class="empty-state"><div class="icon">🧳</div><p>ยังไม่มีทริป กด "+ เพิ่มทริป" เพื่อเริ่ม!</p></div>';
+window.selectTrip=id=>{
+  selectedTripId=id;
+  renderTrips();
+  showPage('expenses');
+};
+
+window.deleteTrip=async id=>{
+  if(!confirm('ลบทริปนี้? รายจ่ายทั้งหมดจะถูกลบด้วย')) return;
+  setSyncStatus('loading');
+  // delete expenses first
+  const tripExp=expenses.filter(e=>e.tripId===id);
+  await Promise.all(tripExp.map(e=>deleteDoc(doc(db,'expenses',e.id))));
+  await deleteDoc(doc(db,'trips',id));
+  if(selectedTripId===id) selectedTripId=null;
+  showToast('🗑️ ลบทริปแล้ว');
+};
+
+function renderTrips(){
+  const el=document.getElementById('trip-list');
+  if(!trips.length){
+    el.innerHTML='<div class="empty-state"><div class="icon">🧳</div><p>กด "+ เพิ่มทริป" เพื่อเริ่ม!</p></div>';
     return;
   }
-  el.innerHTML = trips.map(t => {
-    const tripExp = expenses.filter(e => e.tripId === t.id);
-    const spent = tripExp.reduce((s, e) => s + toTHB(e.amount, e.currency), 0);
-    const pct = t.budget ? Math.min(100, (spent/t.budget)*100) : 0;
-    const barColor = pct > 90 ? 'var(--danger)' : pct > 70 ? 'var(--accent3)' : 'var(--success)';
-    const days = t.start && t.end ? Math.ceil((new Date(t.end)-new Date(t.start))/(86400000))+1 : null;
+  el.innerHTML=trips.map(t=>{
+    const te=expenses.filter(e=>e.tripId===t.id);
+    const spent=te.reduce((s,e)=>s+toTHB(e.amount,e.currency),0);
+    const pct=t.budget?Math.min(100,(spent/t.budget)*100):0;
+    const bc=pct>90?'var(--danger)':pct>70?'var(--accent3)':'var(--success)';
+    const days=t.start&&t.end?Math.ceil((new Date(t.end)-new Date(t.start))/86400000)+1:null;
     return `<div class="trip-item ${t.id===selectedTripId?'selected':''}" onclick="selectTrip('${t.id}')">
       <div class="trip-left">
         <span class="trip-flag">${t.flag}</span>
         <div>
           <div class="trip-name">${t.name}</div>
-          <div class="trip-meta">${t.currency}${days ? ` · ${days} วัน` : ''}${t.start ? ` · ${t.start}` : ''}</div>
-          ${t.budget ? `<div class="progress-wrap" style="min-width:160px">
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
-            <div class="progress-labels"><span>${fmtTHB(spent)}</span><span>${fmtTHB(t.budget)}</span></div>
-          </div>` : ''}
+          <div class="trip-meta">${t.currency}${days?' · '+days+' วัน':''}${t.start?' · '+t.start:''}</div>
+          ${t.budget?`<div style="min-width:150px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${bc}"></div></div><div class="progress-labels"><span>${fmtTHB(spent)}</span><span>${fmtTHB(t.budget)}</span></div></div>`:''}
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-        <span class="trip-budget-badge">${tripExp.length} รายการ</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+        <span style="font-size:12px;background:rgba(108,143,255,0.15);color:var(--accent);padding:3px 8px;border-radius:20px">${te.length} รายการ</span>
         <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteTrip('${t.id}')">ลบ</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function selectTrip(id) {
-  selectedTripId = id;
-  saveAll();
-  renderTrips();
-  showPage('expenses');
-}
-
-function deleteTrip(id) {
-  if (!confirm('ลบทริปนี้? รายจ่ายทั้งหมดจะถูกลบด้วย')) return;
-  trips = trips.filter(t => t.id !== id);
-  expenses = expenses.filter(e => e.tripId !== id);
-  if (selectedTripId === id) selectedTripId = trips.length ? trips[0].id : null;
-  saveAll();
-  renderTrips();
-}
-
 // ===== EXPENSES =====
-function addExpense() {
-  if (!selectedTripId) { alert('กรุณาเลือกทริปก่อน'); return; }
-  const desc = document.getElementById('exp-desc').value.trim();
-  const amount = parseFloat(document.getElementById('exp-amount').value);
-  const currency = document.getElementById('exp-currency').value;
-  const category = document.getElementById('exp-category').value;
-  const date = document.getElementById('exp-date').value;
-  const note = document.getElementById('exp-note').value.trim();
-  if (!desc || !amount || amount <= 0) { alert('กรุณาใส่รายละเอียดและจำนวนเงิน'); return; }
-  const exp = { id: Date.now().toString(), tripId: selectedTripId, desc, amount, currency, category, date, note };
-  expenses.push(exp);
-  saveAll();
-  closeModal('modal-add-expense');
-  document.getElementById('exp-desc').value = '';
-  document.getElementById('exp-amount').value = '';
-  document.getElementById('exp-note').value = '';
-  renderExpenses();
-}
+window.addExpense=async()=>{
+  if(!selectedTripId||!currentUser) return;
+  const desc=document.getElementById('exp-desc').value.trim();
+  const amount=parseFloat(document.getElementById('exp-amount').value);
+  if(!desc||!amount||amount<=0){alert('กรุณาใส่รายละเอียดและจำนวนเงิน');return;}
+  setSyncStatus('loading');
+  try{
+    await addDoc(collection(db,'expenses'),{
+      uid:currentUser.uid,
+      tripId:selectedTripId,
+      desc,amount,
+      currency:document.getElementById('exp-currency').value,
+      category:document.getElementById('exp-category').value,
+      date:document.getElementById('exp-date').value,
+      note:document.getElementById('exp-note').value.trim(),
+      createdAt:serverTimestamp()
+    });
+    closeModal('modal-add-expense');
+    document.getElementById('exp-desc').value='';
+    document.getElementById('exp-amount').value='';
+    document.getElementById('exp-note').value='';
+    showToast('💾 บันทึกแล้ว');
+  }catch(e){alert('เกิดข้อผิดพลาด: '+e.message);}
+};
 
-function renderExpenses() {
-  if (!selectedTripId) {
-    document.getElementById('no-trip-selected').style.display = 'block';
-    document.getElementById('expense-panel').style.display = 'none';
-    document.getElementById('expense-trip-info').style.display = 'none';
+window.deleteExpense=async id=>{
+  await deleteDoc(doc(db,'expenses',id));
+  showToast('🗑️ ลบแล้ว');
+};
+
+window.filterExpenses=(cat,btn)=>{
+  currentFilter=cat;
+  document.querySelectorAll('#filter-chips .cat-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderExpenses();
+};
+
+function renderExpenses(){
+  if(!selectedTripId){
+    document.getElementById('no-trip-selected').style.display='block';
+    document.getElementById('expense-panel').style.display='none';
+    document.getElementById('expense-trip-info').style.display='none';
     return;
   }
-  const trip = trips.find(t => t.id === selectedTripId);
-  if (!trip) return;
-  document.getElementById('no-trip-selected').style.display = 'none';
-  document.getElementById('expense-panel').style.display = 'block';
-  document.getElementById('expense-trip-info').style.display = 'block';
+  const trip=trips.find(t=>t.id===selectedTripId);
+  if(!trip) return;
+  document.getElementById('no-trip-selected').style.display='none';
+  document.getElementById('expense-panel').style.display='block';
+  document.getElementById('expense-trip-info').style.display='block';
 
-  const tripExp = expenses.filter(e => e.tripId === selectedTripId);
-  const spent = tripExp.reduce((s, e) => s + toTHB(e.amount, e.currency), 0);
-  const remaining = trip.budget ? trip.budget - spent : null;
-  const days = trip.start && trip.end ? Math.ceil((new Date(trip.end)-new Date(trip.start))/(86400000))+1 : null;
+  const te=expenses.filter(e=>e.tripId===selectedTripId);
+  const spent=te.reduce((s,e)=>s+toTHB(e.amount,e.currency),0);
+  const remaining=trip.budget?trip.budget-spent:null;
+  const days=trip.start&&trip.end?Math.ceil((new Date(trip.end)-new Date(trip.start))/86400000)+1:null;
 
-  document.getElementById('expense-trip-header').innerHTML =
-    `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-      <span style="font-size:28px">${trip.flag}</span>
-      <div><div style="font-weight:700;font-size:16px">${trip.name}</div>
+  document.getElementById('expense-trip-header').innerHTML=
+    `<div style="display:flex;align-items:center;gap:9px;margin-bottom:13px">
+      <span style="font-size:26px">${trip.flag}</span>
+      <div><div style="font-weight:700;font-size:15px">${trip.name}</div>
       <div style="font-size:12px;color:var(--text2)">${trip.currency}${days?' · '+days+' วัน':''}</div></div>
     </div>`;
 
-  let statsHTML = `<div class="stat-card"><div class="stat-label">ใช้ไปทั้งหมด</div><div class="stat-value danger">${fmtTHB(spent)}</div></div>`;
-  if (trip.budget) {
-    const pct = Math.min(100, (spent/trip.budget)*100);
-    const barColor = pct > 90 ? 'var(--danger)' : pct > 70 ? 'var(--accent3)' : 'var(--success)';
-    statsHTML += `<div class="stat-card"><div class="stat-label">งบที่เหลือ</div><div class="stat-value ${remaining >= 0 ? 'success' : 'danger'}">${fmtTHB(Math.abs(remaining))}${remaining < 0 ? ' เกิน' : ''}</div>
-      <div class="progress-bar-bg" style="margin-top:8px"><div class="progress-bar-fill" style="width:${pct}%;background:${barColor}"></div></div></div>`;
+  let stats=`<div class="stat-card"><div class="stat-label">ใช้ไป</div><div class="stat-value danger">${fmtTHB(spent)}</div></div>`;
+  if(trip.budget){
+    const pct=Math.min(100,(spent/trip.budget)*100);
+    const bc=pct>90?'var(--danger)':pct>70?'var(--accent3)':'var(--success)';
+    stats+=`<div class="stat-card"><div class="stat-label">คงเหลือ</div><div class="stat-value ${remaining>=0?'success':'danger'}">${fmtTHB(Math.abs(remaining))}${remaining<0?' เกิน':''}</div>
+      <div class="progress-bar-bg" style="margin-top:7px"><div class="progress-bar-fill" style="width:${pct}%;background:${bc}"></div></div></div>`;
   }
-  if (days) {
-    const avgDay = spent / (days || 1);
-    statsHTML += `<div class="stat-card"><div class="stat-label">เฉลี่ย/วัน</div><div class="stat-value accent">${fmtTHB(avgDay)}</div></div>`;
+  if(te.length){
+    const dates=[...new Set(te.map(e=>e.date).filter(Boolean))];
+    const avgDay=spent/(dates.length||1);
+    stats+=`<div class="stat-card"><div class="stat-label">เฉลี่ย/วัน</div><div class="stat-value accent">${fmtTHB(avgDay)}</div></div>`;
   }
-  statsHTML += `<div class="stat-card"><div class="stat-label">รายการทั้งหมด</div><div class="stat-value">${tripExp.length}</div></div>`;
-  document.getElementById('expense-stats-row').innerHTML = statsHTML;
+  stats+=`<div class="stat-card"><div class="stat-label">รายการ</div><div class="stat-value">${te.length}</div></div>`;
+  document.getElementById('expense-stats-row').innerHTML=stats;
 
-  // Filter
-  let filtered = tripExp.filter(e => currentFilter === 'all' || e.category === currentFilter);
-  filtered.sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  let filtered=te.filter(e=>currentFilter==='all'||e.category===currentFilter);
+  filtered.sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.createdAt?.seconds-a.createdAt?.seconds);
 
-  if (!filtered.length) {
-    document.getElementById('expense-list').innerHTML = '<div class="empty-state"><div class="icon">💸</div><p>ยังไม่มีรายจ่าย</p></div>';
+  if(!filtered.length){
+    document.getElementById('expense-list').innerHTML='<div class="empty-state"><div class="icon">💸</div><p>ยังไม่มีรายจ่าย</p></div>';
     return;
   }
+  const byDate={};
+  filtered.forEach(e=>{(byDate[e.date||'ไม่ระบุวัน']=byDate[e.date||'ไม่ระบุวัน']||[]).push(e);});
+  const sortedDates=Object.keys(byDate).sort((a,b)=>b.localeCompare(a));
+  const bgMap={'🍜':'rgba(240,160,80,0.15)','🚌':'rgba(108,143,255,0.15)','🏨':'rgba(79,212,196,0.15)','🎡':'rgba(200,100,200,0.12)','🛍️':'rgba(240,100,100,0.12)','💊':'rgba(100,200,100,0.12)','📦':'rgba(120,120,120,0.12)'};
 
-  // Group by date
-  const byDate = {};
-  filtered.forEach(e => { (byDate[e.date] = byDate[e.date] || []).push(e); });
-  const sortedDates = Object.keys(byDate).sort((a,b) => b.localeCompare(a));
-
-  document.getElementById('expense-list').innerHTML = sortedDates.map(date => {
-    const dayExp = byDate[date];
-    const dayTotal = dayExp.reduce((s, e) => s + toTHB(e.amount, e.currency), 0);
-    const items = dayExp.map(e => {
-      const thb = toTHB(e.amount, e.currency);
-      const catEmoji = e.category.split(' ')[0];
-      const bgMap = { '🍜':'rgba(240,160,80,0.15)','🚌':'rgba(108,143,255,0.15)','🏨':'rgba(79,212,196,0.15)','🎡':'rgba(200,100,200,0.12)','🛍️':'rgba(240,100,100,0.12)','💊':'rgba(100,200,100,0.12)','📦':'rgba(120,120,120,0.12)' };
-      const bg = bgMap[catEmoji] || 'rgba(120,120,120,0.12)';
+  document.getElementById('expense-list').innerHTML=sortedDates.map(date=>{
+    const de=byDate[date];
+    const dt=de.reduce((s,e)=>s+toTHB(e.amount,e.currency),0);
+    const dlabel=date&&date.length===10?new Date(date+'T00:00:00').toLocaleDateString('th-TH',{weekday:'short',month:'short',day:'numeric'}):date;
+    const items=de.map(e=>{
+      const thb=toTHB(e.amount,e.currency);
+      const em=e.category?.split(' ')[0]||'📦';
       return `<div class="expense-item">
-        <div class="expense-icon" style="background:${bg}">${catEmoji}</div>
+        <div class="expense-icon" style="background:${bgMap[em]||'rgba(120,120,120,0.12)'}">${em}</div>
         <div class="expense-info">
           <div class="expense-desc">${e.desc}</div>
-          <div class="expense-meta">${e.category}${e.note ? ' · '+e.note : ''}</div>
+          <div class="expense-meta">${e.category||''}${e.note?' · '+e.note:''}</div>
         </div>
         <div class="expense-amount">
-          <div class="expense-orig">${fmt(e.amount, e.currency)} ${e.currency}</div>
+          <div class="expense-orig">${fmt(e.amount,e.currency)} ${e.currency}</div>
           <div class="expense-thb">${fmtTHB(thb)}</div>
         </div>
         <button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">ลบ</button>
       </div>`;
     }).join('');
-    const dateLabel = new Date(date+'T00:00:00').toLocaleDateString('th-TH', {weekday:'short', year:'numeric', month:'short', day:'numeric'});
     return `<div class="date-section">
-      <div class="date-header"><div class="date-label">📅 ${dateLabel}</div><div class="date-total">${fmtTHB(dayTotal)}</div></div>
+      <div class="date-header"><div class="date-label">📅 ${dlabel}</div><div class="date-total">${fmtTHB(dt)}</div></div>
       ${items}
     </div>`;
   }).join('');
 }
 
-function deleteExpense(id) {
-  expenses = expenses.filter(e => e.id !== id);
-  saveAll();
-  renderExpenses();
-  if (document.getElementById('page-summary').classList.contains('active')) renderSummary();
-}
-
-function filterExpenses(cat, btn) {
-  currentFilter = cat;
-  document.querySelectorAll('#filter-chips .cat-chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  renderExpenses();
-}
-
 // ===== SUMMARY =====
-function renderSummary() {
-  const el = document.getElementById('summary-content');
-  if (!selectedTripId) {
-    el.innerHTML = '<div class="empty-state"><div class="icon">📊</div><p>เลือกทริปเพื่อดูสรุปรายจ่าย</p><button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="showPage(\'trips\')">ไปเลือกทริป</button></div>';
+function renderSummary(){
+  const el=document.getElementById('summary-content');
+  if(!selectedTripId){
+    el.innerHTML='<div class="empty-state"><div class="icon">📊</div><p>เลือกทริปเพื่อดูสรุป</p><button class="btn btn-ghost btn-sm" style="margin-top:11px" onclick="showPage(\'trips\')">ไปเลือกทริป</button></div>';
     return;
   }
-  const trip = trips.find(t => t.id === selectedTripId);
-  if (!trip) return;
-  const tripExp = expenses.filter(e => e.tripId === selectedTripId);
-  const totalTHB = tripExp.reduce((s,e) => s + toTHB(e.amount, e.currency), 0);
+  const trip=trips.find(t=>t.id===selectedTripId);
+  if(!trip) return;
+  const te=expenses.filter(e=>e.tripId===selectedTripId);
+  const total=te.reduce((s,e)=>s+toTHB(e.amount,e.currency),0);
 
-  // By category
-  const catTotals = {};
-  tripExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + toTHB(e.amount, e.currency); });
-  const catSorted = Object.entries(catTotals).sort((a,b) => b[1]-a[1]);
+  const catTotals={};
+  te.forEach(e=>{catTotals[e.category]=(catTotals[e.category]||0)+toTHB(e.amount,e.currency);});
+  const catSorted=Object.entries(catTotals).sort((a,b)=>b[1]-a[1]);
+  const dateTotals={};
+  te.forEach(e=>{if(e.date) dateTotals[e.date]=(dateTotals[e.date]||0)+toTHB(e.amount,e.currency);});
+  const datesSorted=Object.entries(dateTotals).sort((a,b)=>a[0].localeCompare(b[0]));
+  const colors=['#6c8fff','#4fd4c4','#f0a050','#e06070','#9f7fff','#4fd4a0','#aaa'];
 
-  const catColors = ['#6c8fff','#4fd4c4','#f0a050','#e06070','#9f7fff','#4fd4a0','#aaaaaa'];
-
-  // By date
-  const dateTotals = {};
-  tripExp.forEach(e => { dateTotals[e.date] = (dateTotals[e.date] || 0) + toTHB(e.amount, e.currency); });
-  const datesSorted = Object.entries(dateTotals).sort((a,b) => a[0].localeCompare(b[0]));
-
-  // Category donut SVG
-  const r = 55, cx = 70, cy = 70;
-  let donutPaths = '';
-  if (totalTHB > 0) {
-    let angle = -90;
-    catSorted.forEach(([cat, val], i) => {
-      const pct = val / totalTHB;
-      const sweep = pct * 360;
-      const r1 = angle * Math.PI / 180;
-      const r2 = (angle + sweep) * Math.PI / 180;
-      const large = sweep > 180 ? 1 : 0;
-      const x1 = cx + r * Math.cos(r1), y1 = cy + r * Math.sin(r1);
-      const x2 = cx + r * Math.cos(r2), y2 = cy + r * Math.sin(r2);
-      donutPaths += `<path d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} Z" fill="${catColors[i%catColors.length]}" opacity="0.9"/>`;
-      angle += sweep;
+  // Donut
+  const r=55,cx=70,cy=70;let paths='';
+  if(total>0){let angle=-90;
+    catSorted.forEach(([,val],i)=>{
+      const sw=(val/total)*360,r1=angle*Math.PI/180,r2=(angle+sw)*Math.PI/180;
+      const large=sw>180?1:0;
+      paths+=`<path d="M${cx},${cy} L${cx+r*Math.cos(r1)},${cy+r*Math.sin(r1)} A${r},${r} 0 ${large},1 ${cx+r*Math.cos(r2)},${cy+r*Math.sin(r2)} Z" fill="${colors[i%colors.length]}" opacity=".9"/>`;
+      angle+=sw;
     });
   }
-
-  const catLegend = catSorted.map(([cat, val], i) =>
-    `<div class="legend-item"><div class="legend-dot" style="background:${catColors[i%catColors.length]}"></div><span style="flex:1;font-size:13px">${cat}</span><span style="font-family:var(--font-display);font-size:13px;font-weight:600">${fmtTHB(val)}</span></div>`
+  const legend=catSorted.map(([cat,val],i)=>
+    `<div class="legend-item"><div class="legend-dot" style="background:${colors[i%colors.length]}"></div><span style="flex:1">${cat}</span><span style="font-family:var(--font-display);font-weight:600;font-size:13px">${fmtTHB(val)}</span></div>`
   ).join('');
-
-  const catRows = catSorted.map(([cat, val], i) => {
-    const pct = totalTHB > 0 ? ((val/totalTHB)*100).toFixed(1) : 0;
+  const catRows=catSorted.map(([cat,val],i)=>{
+    const pct=total>0?((val/total)*100).toFixed(1):0;
     return `<div class="cat-row">
-      <div class="cat-icon-sm">${cat.split(' ')[0]}</div>
-      <div class="cat-name-sm">${cat}</div>
-      <div style="flex:1;padding:0 10px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${catColors[i%catColors.length]}"></div></div></div>
-      <div class="cat-pct">${pct}%</div>
-      <div class="cat-amount-sm" style="min-width:80px;text-align:right">${fmtTHB(val)}</div>
+      <div style="font-size:18px;width:22px">${cat.split(' ')[0]}</div>
+      <div style="flex:1;font-size:14px">${cat}</div>
+      <div style="flex:1;padding:0 8px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${colors[i%colors.length]}"></div></div></div>
+      <div style="font-size:12px;color:var(--text2);width:34px;text-align:right">${pct}%</div>
+      <div style="font-family:var(--font-display);font-size:13px;font-weight:600;min-width:75px;text-align:right">${fmtTHB(val)}</div>
     </div>`;
   }).join('');
-
-  const dailyRows = datesSorted.map(([date, val]) => {
-    const dateLabel = new Date(date+'T00:00:00').toLocaleDateString('th-TH', {weekday:'short', month:'short', day:'numeric'});
-    const dayItems = tripExp.filter(e => e.date === date);
-    const maxDay = Math.max(...datesSorted.map(d => d[1]));
-    const pct = (val / maxDay) * 100;
+  const maxDay=datesSorted.length?Math.max(...datesSorted.map(d=>d[1])):1;
+  const dailyRows=datesSorted.map(([date,val])=>{
+    const dlabel=new Date(date+'T00:00:00').toLocaleDateString('th-TH',{weekday:'short',month:'short',day:'numeric'});
+    const cnt=te.filter(e=>e.date===date).length;
     return `<div class="cat-row">
-      <div style="min-width:100px;font-size:13px;color:var(--text2)">${dateLabel}</div>
-      <div style="flex:1;padding:0 10px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:var(--accent)"></div></div></div>
-      <div style="font-size:12px;color:var(--text2);width:28px;text-align:right">${dayItems.length}x</div>
-      <div class="cat-amount-sm" style="min-width:80px;text-align:right">${fmtTHB(val)}</div>
+      <div style="min-width:95px;font-size:13px;color:var(--text2)">${dlabel}</div>
+      <div style="flex:1;padding:0 8px"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${(val/maxDay)*100}%;background:var(--accent)"></div></div></div>
+      <div style="font-size:12px;color:var(--text2);width:26px;text-align:right">${cnt}x</div>
+      <div style="font-family:var(--font-display);font-size:13px;font-weight:600;min-width:75px;text-align:right">${fmtTHB(val)}</div>
     </div>`;
   }).join('');
+  const avgDay=total/(datesSorted.length||1);
+  const days=trip.start&&trip.end?Math.ceil((new Date(trip.end)-new Date(trip.start))/86400000)+1:datesSorted.length||1;
 
-  const days = trip.start && trip.end ? Math.ceil((new Date(trip.end)-new Date(trip.start))/(86400000))+1 : datesSorted.length || 1;
-  const avgDay = totalTHB / (datesSorted.length || 1);
-
-  el.innerHTML = `
+  el.innerHTML=`
     <div class="section-header">
       <div class="section-title">${trip.flag} ${trip.name}</div>
-      <button class="btn btn-ghost btn-sm" onclick="showPage('trips')">เปลี่ยนทริป</button>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">ใช้ไปทั้งหมด</div><div class="stat-value danger">${fmtTHB(totalTHB)}</div></div>
-      ${trip.budget ? `<div class="stat-card"><div class="stat-label">งบประมาณ</div><div class="stat-value">${fmtTHB(trip.budget)}</div></div>` : ''}
-      <div class="stat-card"><div class="stat-label">เฉลี่ย/วัน</div><div class="stat-value accent">${fmtTHB(avgDay)}</div></div>
-      <div class="stat-card"><div class="stat-label">รายการ</div><div class="stat-value">${tripExp.length}</div></div>
-    </div>
-
-    ${trip.budget ? `<div class="card">
-      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>งบประมาณ</div>
-      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:8px">
-        <span>ใช้ไป ${fmtTHB(totalTHB)}</span>
-        <span>${((totalTHB/trip.budget)*100).toFixed(1)}%</span>
-        <span>คงเหลือ ${fmtTHB(Math.max(0, trip.budget - totalTHB))}</span>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button class="btn btn-sheets btn-sm" onclick="exportToSheets()">📊 Export Google Sheets</button>
+        <button class="btn btn-ghost btn-sm" onclick="showPage('trips')">เปลี่ยนทริป</button>
       </div>
-      <div class="progress-bar-bg" style="height:10px"><div class="progress-bar-fill" style="height:10px;width:${Math.min(100,(totalTHB/trip.budget)*100)}%;background:${totalTHB>trip.budget?'var(--danger)':totalTHB/trip.budget>0.8?'var(--accent3)':'var(--success)'}"></div></div>
-    </div>` : ''}
-
-    <div class="card">
-      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>สรุปตามหมวดหมู่</div>
-      ${totalTHB > 0 ? `<div class="donut-wrap">
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">ใช้ไปทั้งหมด</div><div class="stat-value danger">${fmtTHB(total)}</div></div>
+      ${trip.budget?`<div class="stat-card"><div class="stat-label">งบประมาณ</div><div class="stat-value">${fmtTHB(trip.budget)}</div></div>`:''}
+      <div class="stat-card"><div class="stat-label">เฉลี่ย/วัน</div><div class="stat-value accent">${fmtTHB(avgDay)}</div></div>
+      <div class="stat-card"><div class="stat-label">รายการ</div><div class="stat-value">${te.length}</div></div>
+    </div>
+    ${trip.budget?`<div class="card"><div class="card-title"><span class="dot" style="background:var(--accent3)"></span>งบประมาณ</div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:7px">
+        <span>ใช้ไป ${fmtTHB(total)}</span><span>${((total/trip.budget)*100).toFixed(1)}%</span><span>เหลือ ${fmtTHB(Math.max(0,trip.budget-total))}</span></div>
+      <div class="progress-bar-bg" style="height:9px"><div class="progress-bar-fill" style="height:9px;width:${Math.min(100,(total/trip.budget)*100)}%;background:${total>trip.budget?'var(--danger)':total/trip.budget>.8?'var(--accent3)':'var(--success)'}"></div></div>
+    </div>`:''}
+    <div class="card"><div class="card-title"><span class="dot" style="background:var(--accent2)"></span>สรุปตามหมวดหมู่</div>
+      ${total>0?`<div class="donut-wrap">
         <svg width="140" height="140" viewBox="0 0 140 140">
-          <circle cx="70" cy="70" r="55" fill="var(--bg3)"/>
-          ${donutPaths}
-          <circle cx="70" cy="70" r="35" fill="var(--card)"/>
-          <text x="70" y="67" text-anchor="middle" fill="var(--text2)" font-size="11" font-family="Sarabun">รวม</text>
-          <text x="70" y="82" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600" font-family="Space Grotesk">฿${Math.round(totalTHB).toLocaleString()}</text>
+          <circle cx="70" cy="70" r="55" fill="var(--bg3)"/>${paths}
+          <circle cx="70" cy="70" r="34" fill="var(--card)"/>
+          <text x="70" y="67" text-anchor="middle" fill="var(--text2)" font-size="10" font-family="Sarabun">รวม</text>
+          <text x="70" y="81" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600" font-family="Space Grotesk">฿${Math.round(total).toLocaleString()}</text>
         </svg>
-        <div class="donut-legend">${catLegend}</div>
-      </div>` : '<div class="empty-state"><p>ยังไม่มีข้อมูล</p></div>'}
-      <div class="divider"></div>
-      ${catRows}
+        <div class="donut-legend">${legend}</div></div>`:'<div class="empty-state"><p>ยังไม่มีข้อมูล</p></div>'}
+      <div class="divider"></div>${catRows}
     </div>
-
-    <div class="card">
-      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>รายจ่ายรายวัน</div>
-      ${datesSorted.length ? dailyRows : '<div class="empty-state"><p>ยังไม่มีข้อมูล</p></div>'}
-    </div>
-  `;
+    <div class="card"><div class="card-title"><span class="dot"></span>รายจ่ายรายวัน</div>
+      ${datesSorted.length?dailyRows:'<div class="empty-state"><p>ยังไม่มีข้อมูล</p></div>'}
+    </div>`;
 }
 
-// ===== CONVERTER =====
-const CURRENCY_NAMES = {
-  JPY:'เยน', KRW:'วอน', USD:'ดอลลาร์', EUR:'ยูโร', GBP:'ปอนด์',
-  SGD:'ดอลลาร์สิงคโปร์', HKD:'ดอลลาร์ฮ่องกง', AUD:'ดอลลาร์ออสเตรเลีย',
-  CNY:'หยวน', TWD:'ดอลลาร์ไต้หวัน', MYR:'ริงกิต', VND:'ดอง', THB:'บาท'
+// ===== EXPORT GOOGLE SHEETS =====
+window.exportToSheets=()=>{
+  if(!selectedTripId) return;
+  const trip=trips.find(t=>t.id===selectedTripId);
+  if(!trip){return;}
+  const te=expenses.filter(e=>e.tripId===selectedTripId);
+  te.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+
+  // Build TSV (Tab-separated — pastes perfectly into Google Sheets)
+  const rows=[
+    ['Travel Money Planner — '+trip.name,'','','','',''],
+    ['ประเทศ',trip.flag,'สกุลเงิน',trip.currency,'งบประมาณ (THB)',trip.budget||'-'],
+    ['วันเริ่ม',trip.start||'-','วันสิ้นสุด',trip.end||'-','',''],
+    [''],
+    ['วันที่','รายการ','หมวดหมู่','จำนวนเงิน','สกุลเงิน','บาท (THB)','หมายเหตุ'],
+    ...te.map(e=>[e.date||'',e.desc,e.category,e.amount,e.currency,Math.round(toTHB(e.amount,e.currency)),e.note||'']),
+    [''],
+    ['รวมทั้งหมด (THB)','','',' ',' ',Math.round(te.reduce((s,e)=>s+toTHB(e.amount,e.currency),0)),''],
+  ];
+
+  const tsv=rows.map(r=>r.join('\t')).join('\n');
+  navigator.clipboard.writeText(tsv).then(()=>{
+    showToast('📋 Copy แล้ว! เปิด Google Sheets แล้ว Ctrl+V วางได้เลย');
+    setTimeout(()=>{
+      if(confirm('เปิด Google Sheets ใหม่เลยไหม?')){
+        window.open('https://sheets.new','_blank');
+      }
+    },800);
+  }).catch(()=>{
+    // Fallback: show in textarea
+    const w=window.open('','_blank');
+    w.document.write(`<html><body><h3>Copy ข้อความด้านล่าง แล้ววางใน Google Sheets</h3><textarea style="width:100%;height:80vh;font-size:12px">${tsv}</textarea></body></html>`);
+  });
 };
 
-function doConvert() {
-  const amount = parseFloat(document.getElementById('conv-amount').value) || 0;
-  const from = document.getElementById('conv-from').value;
-  const to = document.getElementById('conv-to').value;
-  const fromRate = RATES[from] || 1;
-  const toRate = RATES[to] || 1;
-  const result = amount * fromRate / toRate;
-  document.getElementById('conv-result').textContent = fmt(result, to) + ' ' + to;
-  const rate1 = fromRate / toRate;
-  document.getElementById('conv-rate-text').textContent = `1 ${from} = ${fmt(rate1, to)} ${to}`;
-}
+// ===== CONVERTER =====
+window.doConvert=()=>{
+  const amount=parseFloat(document.getElementById('conv-amount').value)||0;
+  const from=document.getElementById('conv-from').value;
+  const to=document.getElementById('conv-to').value;
+  const result=amount*(RATES[from]||1)/(RATES[to]||1);
+  document.getElementById('conv-result').textContent=fmt(result,to)+' '+to;
+  document.getElementById('conv-rate-text').textContent=`1 ${from} = ${fmt((RATES[from]||1)/(RATES[to]||1),to)} ${to}`;
+};
 
-function updateExpenseConvert() {
-  const amount = parseFloat(document.getElementById('exp-amount').value) || 0;
-  const currency = document.getElementById('exp-currency').value;
-  const thb = toTHB(amount, currency);
-  const el = document.getElementById('exp-convert-preview');
-  if (amount > 0 && currency !== 'THB') {
-    el.textContent = `≈ ${fmtTHB(thb)} (1 ${currency} = ฿${RATES[currency]})`;
-  } else {
-    el.textContent = '';
-  }
-}
+window.updateExpConv=()=>{
+  const amount=parseFloat(document.getElementById('exp-amount').value)||0;
+  const cur=document.getElementById('exp-currency').value;
+  const el=document.getElementById('exp-conv-preview');
+  el.textContent=(amount>0&&cur!=='THB')?`≈ ${fmtTHB(toTHB(amount,cur))} (1 ${cur} = ฿${RATES[cur]})` :'';
+};
 
-function initRateEditor() {
-  const currencies = ['JPY','KRW','USD','EUR','GBP','SGD','HKD','AUD','CNY','TWD','MYR','VND'];
-  const el = document.getElementById('rate-editor');
-  el.innerHTML = currencies.map(c => `
-    <div class="form-row" style="margin-bottom:10px;align-items:center">
-      <div style="display:flex;align-items:center;gap:8px;min-width:100px">
-        <span style="font-size:13px;font-weight:600">1 ${c}</span>
-        <span style="font-size:13px;color:var(--text2)">=</span>
-      </div>
-      <input type="number" id="rate-${c}" value="${RATES[c]}" step="0.0001" min="0"
-        style="flex:1" onchange="updateRate('${c}', this.value)">
-      <span style="font-size:13px;color:var(--text2);width:32px">THB</span>
-    </div>
-  `).join('');
-}
+window.initRateEditor=()=>{
+  const currencies=['JPY','KRW','USD','EUR','GBP','SGD','HKD','AUD','CNY','TWD','MYR','VND'];
+  document.getElementById('rate-editor').innerHTML=currencies.map(c=>`
+    <div class="form-row" style="margin-bottom:9px;align-items:center">
+      <div style="min-width:90px;font-size:13px;font-weight:600">1 ${c} =</div>
+      <input type="number" value="${RATES[c]}" step="0.0001" min="0" onchange="updateRate('${c}',this.value)">
+      <div style="font-size:13px;color:var(--text2);width:30px;padding-left:6px">THB</div>
+    </div>`).join('');
+};
 
-function updateRate(currency, val) {
-  RATES[currency] = parseFloat(val) || RATES[currency];
-  saveAll();
+window.updateRate=(cur,val)=>{
+  RATES[cur]=parseFloat(val)||RATES[cur];
+  localStorage.setItem('tmp_rates',JSON.stringify(RATES));
   doConvert();
-}
+};
 
-// ===== INIT =====
-renderTrips();
-
-if (selectedTripId && trips.find(t => t.id === selectedTripId)) {
-  // keep current page
-} else if (trips.length) {
-  selectedTripId = null;
-}
 </script>
 </body>
 </html>
